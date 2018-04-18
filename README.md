@@ -61,6 +61,11 @@ This software is distributed under the terms of the MIT License
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
+### 1.1.0 (2018-04-18)
+
+- Added global file attributes.
+- Fixed syntax error in the script.
+
 ### 1.0.0 (2018-04-18)
 
 - Initial version.

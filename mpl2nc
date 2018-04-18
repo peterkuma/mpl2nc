@@ -9,7 +9,7 @@ import datetime as dt
 import numpy as np
 from netCDF4 import Dataset
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 HEADER = [
     ['unit', 'uint16', 'unit', 'Unique number for each data system.'],
@@ -219,6 +219,9 @@ def write(d, filename):
         if h['units'] is not None: var.units = h['units']
         if h['long_name'] is not None: var.long_name = h['long_name']
         if h['comment'] is not None: var.comment = h['comment']
+    f.created = dt.datetime.utcnow().strftime('%Y-%m-%dT:%H:%M:%SZ')
+    f.software = 'mpl2nc (https://github.com/peterkuma/mpl2nc)'
+    f.version = __version__
     f.close()
 
 if __name__ == '__main__':
@@ -227,10 +230,6 @@ if __name__ == '__main__':
     p.add_argument('input', help='input file (mpl)')
     p.add_argument('output', help='output file (NetCDF)')
     args = p.parse_args()
-
-    if args.v:
-        print __version__
-        sys.exit(0)
 
     d = read(args.input)
     write(d, args.output)
