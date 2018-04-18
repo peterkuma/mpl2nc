@@ -3,9 +3,9 @@
 Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.
 
 mpl2nc is a Python program for converting binary MPL files to NetCDF4. The
-converted variables closely follow those in the binary files. See the [Micro
-Pulse LiDAR System Software Manual]() for description of the original format and
-varibales. 
+converted variables closely follow those in the binary files. See the *Micro
+Pulse LiDAR System Software Manual* for description of the original format and
+variables. 
 
 The program uses Python 2.7 and can run on any operating system with
 Python 2.7 and the netCDF4 Python package installed.
