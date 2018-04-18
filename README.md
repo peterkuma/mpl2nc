@@ -32,12 +32,13 @@ Positional arguments:
 Install the required software:
 
 - Python 2.7 (recommended Anaconda/Python 2.7 on Windows)
+- numpy Python package
 - netCDF4 Python package
 
-netCDF4 can be installed with pip if available in your Python distribution:
+numpy and netCDF4 can be installed with pip if available in your Python distribution:
 
 ```sh
-pip install netCDF4
+pip install numpy netCDF4
 ```
 
 To install mpl2nc with pip:
