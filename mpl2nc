@@ -1,0 +1,236 @@
+#!/usr/bin/env python
+
+import sys
+import argparse
+import logging
+import struct
+import datetime as dt
+
+import numpy as np
+from netCDF4 import Dataset
+
+__version__ = '1.0.0'
+
+HEADER = [
+    ['unit', 'uint16', 'unit', 'Unique number for each data system.'],
+    ['version', 'uint16', 'version', 'Software version of the EXE that created this file. If the SigmaMPL.exe version is 3.00 then this value would be 300.'],
+    ['year', 'uint16'],
+    ['month', 'uint16'],
+    ['day', 'uint16'],
+    ['hours', 'uint16'],
+    ['minutes', 'uint16'],
+    ['seconds', 'uint16'],
+    ['shots_sum', 'uint32', 'shots sum', 'Number of laser shots collected.', 'count'],
+    ['trigger_frequency', 'int32', 'trigger frequency', 'Laser fire rate (usually 2500).', 'Hz'],
+    ['energy_monitor', 'uint32', 'energy monitor', 'Mean of the Energy Monitor readings * 1000.'],
+    ['temp_0', 'uint32', 'A/D #0 mean', 'Mean of the A/D #0 readings * 100.'],
+    ['temp_1', 'uint32', 'A/D #1 mean', 'Mean of the A/D #1 readings * 100.'],
+    ['temp_2', 'uint32', 'A/D #2 mean', 'Mean of the A/D #2 readings * 100.'],
+    ['temp_3', 'uint32', 'A/D #3 mean', 'Mean of the A/D #3 readings * 100.'],
+    ['temp_4', 'uint32', 'A/D #4 mean', 'Mean of the A/D #4 readings * 100.'],
+    ['background_average', 'float32', 'background average', 'Background Average for Channel #1.'],
+    ['background_stddev', 'float32', 'background standard deviation', 'Background Standard Deviation for channel #1.'],
+    ['number_channels', 'uint16', 'number of channels', 'MCS Channels collected. Either 1 or 2.', 'count'],
+    ['number_bins', 'uint32'],
+    ['bin_time', 'float32', 'bin time', 'Bin width (100, 200, or 500 nanoseconds).', 's'],
+    ['range_calibration', 'float32', 'range calibration', 'Default is 0; will indicate range calibration offset measured for particular unit.', 'm'],
+    ['number_data_bins', 'uint16', 'number of data bins', 'Number of data bins (not background) following First Data Bin.', 'count'],
+    ['scan_scenario_flags', 'uint16', 'scan scenario flags', '0: No scan scenario used, 1: Scan scenario used].'],
+    ['num_background_bins', 'uint16', 'number of background bins', 'Number of background bins following First Background Bin.', 'count'],
+    ['azimuth_angle', 'float32', 'azimuth angle', 'Azimuth angle of scanner.', 'degrees'],
+    ['elevation_angle', 'float32', 'elevation angle', 'Elevation angle of scanner.', 'degrees'],
+    ['compass_degrees', 'float32', 'compass degrees', 'Compass degrees (currently unused).', 'degrees'],
+    ['polarization_voltage_0', 'float32', 'polarization voltage 0', 'Not used.'],
+    ['polarization_voltage_1', 'float32', 'polarization voltage 1', 'Not used.'],
+    ['gps_latitude', 'float32', 'GPS latitude', 'GPS latitude (optional).', 'degrees_north'],
+    ['gps_longitude', 'float32', 'GPS longitude', 'GPS longitude (optional).', 'degrees_east'],
+    ['gps_altitude', 'float32', 'GPS altitude', 'GPS altitude (optional).', 'm'],
+    ['ad_data_bad_flag', 'byte', 'A/D data bad flag', '0: A/D data good, 1: A/D data probably out of sync. Energy monitor collection is not exactly aligned with MCS shots.'],
+    ['data_file_version', 'byte', 'data file version', 'Version of the file format.'],
+    ['background_average_2', 'float32', 'background average (channel 2)', 'Background Average for Channel #2.'],
+    ['background_stddev_2', 'float32', 'background standard deviation (channel 2)', 'Background Standard Deviation for Channel #2.'],
+    ['mcs_mode', 'byte', 'MCS mode', 'MCS mode register.'],
+    ['first_data_bin', 'uint16', 'first data bin', 'Bin # of the first return data.'],
+    ['system_type', 'byte', 'system type', '0: Normal MPL, 1: MiniMPL.'],
+    ['sync_pulses_seen_per_second', 'uint16', 'sync pulses seen per second', 'MiniMPL Only; indicates average number of laser pulses seen to validate if laser is operating correctly.', 'count s-1'],
+    ['first_background_bin', 'uint16', 'first background bin', 'Used primarily for MiniMPL (will always be 0 for normal MPL as background is collected pre-trigger).'],
+    ['header_size', 'uint16'],
+    ['ws_used', 'byte', 'weather station used', '0: Weather station not used, 1: Weather station used.'],
+    ['ws_inside_temp', 'float32', 'inside temperature', 'Weather station inside temperature.', 'degree_C'],
+    ['ws_outside_temp', 'float32', 'outside temperature', 'Weather station outside temperature.', 'degree_C'],
+    ['ws_inside_humidity', 'float32', 'inside humidity', 'Weather station inside humidity.', 'percent'],
+    ['ws_outside_humidity', 'float32', 'outside humidity', 'Weather station outside humidity.', 'percent'],
+    ['ws_dewpoint', 'float32', 'dewpoint temperature', 'Weather station dewpoint.', 'degree_C'],
+    ['ws_wind_speed', 'float32', 'wind speed', 'Weather station wind speed.', 'km h-1'],
+    ['ws_wind_direction', 'int16', 'wind direction', 'Weather station wind direction.', 'degree'], 
+    ['ws_barometric_pressure', 'float32', 'barometric pressure', 'Weather station barometric pressure.', 'hPa'], 
+    ['ws_rain_rate', 'float32', 'rain rate', 'Weather station rain rate.', 'mm h-1'],
+]
+
+TYPES = {
+    'uint16': 'H',
+    'int16': 'h',
+    'byte': 'B',
+    'float32': 'f',
+    'uint32': 'I',
+    'int32': 'i',
+}
+
+TYPE_SIZE = {
+    'uint16': 2,
+    'int16': 2,
+    'byte': 1,
+    'float32': 4,
+    'uint32': 4,
+    'int32': 4,
+}
+
+NC_TYPE = {
+    'uint16': 'u2',
+    'int16': 'i2',
+    'int8': 'b',
+    'float32': 'f4',
+    'uint32': 'u4',
+    'int32': 'i4',
+    'uint64': 'u8',
+}
+
+FILL_VALUE = {
+    'uint16': -999,
+    'int16': -999,
+    'int8': 255,
+    'float32': -999.0,
+    'uint32': 4294939996,
+    'int32': 4294939996,
+    'uint64': 18446744073709551615,
+}
+
+HEADER_FMT = '<' + ''.join([TYPES[x[1]] for x in HEADER])
+HEADER_SIZE = struct.calcsize(HEADER_FMT)
+HEADER_FIELDS = [x[0] for x in HEADER]
+
+HEADER_TYPES = {x[0]: x[1] for x in HEADER}
+HEADER_TYPES['channel_1'] = 'float32'
+HEADER_TYPES['channel_2'] = 'float32'
+
+EXCL_FIELDS = [
+    'year',
+    'month',
+    'day',
+    'hours',
+    'minutes',
+    'seconds',
+    'header_size',
+    'number_bins',
+]
+
+FIELDS = [x for x in HEADER_FIELDS if x not in EXCL_FIELDS]
+
+EXTRA_FIELDS = [
+    ['time_utc', 'S', 'UTC time', 'Record collection time (UTC).', 'ISO 8601'],
+    ['time', 'uint64', 'time', 'Record collection time.', 'seconds since 1970-01-01 00:00:00'],
+    ['channel_1', 'float32', 'channel #1 data', 'For MPL systems without POL-FS option, the return signal array is stored here. For MPL systems with the POL-FS option, the cross-polarized return signal array is stored here.', 'count us-1'],
+    ['channel_2', 'float32', 'channel #2 data', 'Used only with POL-FS option. The co-polarized return signal array is stored here.', 'count us-1'],
+]
+
+NC_HEADER = {x[0]: {
+        'long_name': x[2] if len(x) > 2 else None,
+        'comment': x[3] if len(x) > 3 else None,
+        'units': x[4] if len(x) > 4 else None, 
+    }
+    for x in (HEADER + EXTRA_FIELDS)
+}
+
+def read_header(f):
+    buf = f.read(HEADER_SIZE)
+    if len(buf) == 0:
+        return None
+    if len(buf) < HEADER_SIZE:
+        raise IOError('Incomplete header')
+    res = struct.unpack_from(HEADER_FMT, buf)
+    return {k: v for k, v in zip(HEADER_FIELDS, res)}
+
+def read_channel(f, d):
+    n = d['number_bins']
+    buf = f.read(4*n)
+    if len(buf) < 4*n:
+        raise IOError('Incomplete channel data')
+    res = struct.unpack_from('<' + 'f'*n, buf)
+    return np.array(res, dtype=np.float32) 
+
+def read_profile(f):
+    d = read_header(f)
+    if d is None:
+        return None
+    d['channel_1'] = read_channel(f, d)
+    d['channel_2'] = read_channel(f, d)
+    return d
+
+def time_utc(d):
+    return '%04d-%02d-%02dT%02d:%02d:%02d' % (
+        d['year'],
+        d['month'],
+        d['day'],
+        d['hours'],
+        d['minutes'],
+        d['seconds'],
+    )
+
+def time(d):
+    t = dt.datetime(d['year'], d['month'], d['day'], d['hours'], d['minutes'], d['seconds'])
+    t0 = dt.datetime(1970, 1, 1)
+    return (t - t0).total_seconds()
+
+def process(dd):
+    dx = {}
+    for k in FIELDS:
+        dx[k] = np.array([d[k] for d in dd], dtype=HEADER_TYPES[k])
+    dx['channel_1'] = np.vstack([np.array(d['channel_1'], dtype=np.float32) for d in dd])
+    dx['channel_2'] = np.vstack([np.array(d['channel_2'], dtype=np.float32) for d in dd])
+    dx['time_utc'] = np.array([time_utc(d) for d in dd])
+    dx['time'] = np.array([time(d) for d in dd], dtype=np.uint64)
+    return dx
+
+def read(filename):
+    dd = []
+    with open(filename, 'rb') as f:
+        while True:
+            d = read_profile(f)
+            if d is None:
+                break
+            dd.append(d) 
+    return process(dd)
+
+def write(d, filename):
+    f = Dataset(filename, 'w')
+    f.createDimension('profile', None)
+    f.createDimension('range', None)
+    for k, v in d.iteritems():
+        if k.startswith('channel_'):
+            var = f.createVariable(k, NC_TYPE[v.dtype.name], ['profile', 'range'], fill_value=FILL_VALUE[v.dtype.name])
+            var[:] = v
+        elif k == 'time_utc':
+            var = f.createVariable(k, 'S19', ['profile'])
+            var[:] = v
+        else:
+            var = f.createVariable(k, NC_TYPE[v.dtype.name], ['profile'], fill_value=FILL_VALUE[v.dtype.name])
+            var[:] = v
+        h = NC_HEADER[k]
+        if h['units'] is not None: var.units = h['units']
+        if h['long_name'] is not None: var.long_name = h['long_name']
+        if h['comment'] is not None: var.comment = h['comment']
+    f.close()
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser(prog='mpl2nc', description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.')    
+    p.add_argument('-v', action='version', version=__version__)
+    p.add_argument('input', help='input file (mpl)')
+    p.add_argument('output', help='output file (NetCDF)')
+    args = p.parse_args()
+
+    if args.v:
+        print __version__
+        sys.exit(0)
+
+    d = read(args.input)
+    write(d, args.output)
