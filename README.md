@@ -130,4 +130,4 @@ Version numbering follows [Semantic Versioning](https://semver.org/).
 
 ## Contact
 
-For support or reporting bugs contact Peter Kuma <peter.kuma@fastmail.com>.
+For support or reporting bugs contact Peter Kuma <<peter.kuma@fastmail.com>>.
