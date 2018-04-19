@@ -55,6 +55,8 @@ python setup.py install
 
 ## Variables
 
+### 1D (profile)
+
 - **ad_data_bad_flag**, A/D data bad flag – *0: A/D data good, 1: A/D data probably out of sync. Energy monitor collection is not exactly aligned with MCS shots.*
 - **azimuth_angle**, azimuth angle (degrees) – *Azimuth angle of scanner.*
 - **background_average**, background average – *Background Average for Channel #1.*
@@ -62,8 +64,6 @@ python setup.py install
 - **background_stddev**, background standard deviation – *Background Standard Deviation for channel #1.*
 - **background_stddev_2**, background standard deviation (channel 2) – *Background Standard Deviation for Channel #2.*
 - **bin_time**, bin time (s) – *Bin width (100, 200, or 500 nanoseconds).*
-- **channel_1**, channel #1 data (count us-1) – *For MPL systems without POL-FS option, the return signal array is stored here. For MPL systems with the POL-FS option, the cross-polarized return signal array is stored here.*
-- **channel_2**, channel #2 data (count us-1) – *Used only with POL-FS option. The co-polarized return signal array is stored here.*
 - **compass_degrees**, compass degrees (degrees) – *Compass degrees (currently unused).*
 - **data_file_version**, data file version – *Version of the file format.*
 - **elevation_angle**, elevation angle (degrees) – *Elevation angle of scanner.*
@@ -104,6 +104,11 @@ python setup.py install
 - **ws_used**, weather station used – *0: Weather station not used, 1: Weather station used.*
 - **ws_wind_direction**, wind direction (degree) – *Weather station wind direction.*
 - **ws_wind_speed**, wind speed (km h-1) – *Weather station wind speed.*
+
+### 2D (profile × range)
+
+- **channel_1**, channel #1 data (count us-1) – *For MPL systems without POL-FS option, the return signal array is stored here. For MPL systems with the POL-FS option, the cross-polarized return signal array is stored here.*
+- **channel_2**, channel #2 data (count us-1) – *Used only with POL-FS option. The co-polarized return signal array is stored here.*
 
 ## Attributes
 
