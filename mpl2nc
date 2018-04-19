@@ -9,7 +9,7 @@ import datetime as dt
 import numpy as np
 from netCDF4 import Dataset
 
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 HEADER = [
     ['unit', 'uint16', 'unit', 'Unique number for each data system.'],
