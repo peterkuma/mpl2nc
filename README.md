@@ -125,6 +125,10 @@ This software is distributed under the terms of the MIT License
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
+### 1.1.1 (2018-04-19)
+
+- Fixed type conversion bug on Windows
+
 ### 1.1.0 (2018-04-18)
 
 - Added global file attributes.
