@@ -53,6 +53,8 @@ Optionally, to install from the source distribution:
 python setup.py install
 ```
 
+You can also run the script mpl2nc directly without installation.
+
 ## Variables
 
 ### 1D (profile)
