@@ -143,3 +143,10 @@ Version numbering follows [Semantic Versioning](https://semver.org/).
 ## Contact
 
 For support or reporting bugs contact Peter Kuma <<peter.kuma@fastmail.com>>.
+
+## See also
+
+[ALCF](https://alcf-lidar.github.io),
+[cl2nc](https://github.com/peterkuma/cl2nc),
+[mrr2c](https://github.com/peterkuma/mrr2c),
+[ccplot](https://ccplot.org)
