@@ -86,7 +86,7 @@ You can also run the script mpl2nc directly without installation.
 | range_calibration | range calibration (m) | Default is 0; will indicate range calibration offset measured for particular unit. |
 | scan_scenario_flags | scan scenario flags | `0`: No scan scenario used, `1`: Scan scenario used]. |
 | shots_sum | shots sum (count) | Number of laser shots collected. |
-| sync_pulses_seen_per_second | sync pulses seen per second (count s<sup>-1</sup>) | MiniMPL Only; indicates average number of laser pulses seen to validate if laser is operating correctly. |
+| sync_pulses_seen_per_second | sync pulses seen per second (count.s<sup>-1</sup>) | MiniMPL Only; indicates average number of laser pulses seen to validate if laser is operating correctly. |
 | system_type | system type | `0`: Normal MPL, `1`: MiniMPL. |
 | temp_0 | A/D #0 mean | Mean of the A/D #0 readings * 100. |
 | temp_1 | A/D #1 mean | Mean of the A/D #1 readings * 100. |
@@ -113,8 +113,8 @@ You can also run the script mpl2nc directly without installation.
 
 | Variable | Description | Comment |
 | - | - | - |
-| channel_1 | channel #1 data (count us<sup>-1</sup>) | For MPL systems without POL-FS option, the return signal array is stored here. For MPL systems with the POL-FS option, the cross-polarized return signal array is stored here. |
-| channel_2 | channel #2 data (count us<sup>-1</sup>) | Used only with POL-FS option. The co-polarized return signal array is stored here. |
+| channel_1 | channel #1 data (count.µs<sup>-1</sup>) | For MPL systems without POL-FS option, the return signal array is stored here. For MPL systems with the POL-FS option, the cross-polarized return signal array is stored here. |
+| channel_2 | channel #2 data (count.µs<sup>-1</sup>) | Used only with POL-FS option. The co-polarized return signal array is stored here. |
 
 ## Attributes
 
