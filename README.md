@@ -40,6 +40,12 @@ Positional arguments:
 - `input` – input file or directory (mpl)
 - `output` – output file or directory (NetCDF)
 
+If `input` is not specified, only the correction files are converted
+and written to `output`.
+
+Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and later)
+is supported.
+
 ## Install
 
 Install the required software:
