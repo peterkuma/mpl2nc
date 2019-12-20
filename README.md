@@ -88,7 +88,7 @@ You can also run the script mpl2nc directly without installation.
 | ap_header | afterpulse header | | |
 | ap_number_bins | afterpulse number of bins | count | |
 | ap_number_channels | afterpulse number of channels | count | |
-| c | speed of light | m s-1 | |
+| c | speed of light | m.s<sup>-1</sup> | |
 | dt_coeff | dead time coefficient | | N coefficients of polynomial degree N-1 in decreasing order |
 | dt_coeff_degree | dead time coefficient degree | count | |
 | dt_number_coeff | dead time number of coefficients | count | |
@@ -168,7 +168,7 @@ You can also run the script mpl2nc directly without installation.
 | channel_1 | channel #1 data | count.µs<sup>-1</sup> | For MPL systems without POL-FS option, the return signal array is stored here. For MPL systems with the POL-FS option, the cross-polarized return signal array is stored here. |
 | channel_2 | channel #2 data | count.µs<sup>-1</sup> | Used only with POL-FS option. The co-polarized return signal array is stored here. |
 | nrb_copol | copol normalized relative backscatter | count.µs<sup>-1</sup>.µJ<sup>-1</sup>.km<sup>2</sup> | Experimental. |
-| nrb_crosspol | crosspol normalized relative backscatter | count.µs<sup>-1</sup.µJ<sup>-1</sup>.km<sup>2</sup> | Experimental. |
+| nrb_crosspol | crosspol normalized relative backscatter | count.µs<sup>-1</sup>.µJ<sup>-1</sup>.km<sup>2</sup> | Experimental. |
 
 ## Attributes
 
