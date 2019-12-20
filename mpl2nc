@@ -336,11 +336,11 @@ if __name__ == '__main__':
         description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.'
     )
     p.add_argument('-a', nargs=1, dest='afterpulse',
-        help='Afterpulse (bin)')
+        help='afterpulse (bin)')
     p.add_argument('-d', nargs=1, dest='dead_time',
-        help='Dead time correction (bin)')
+        help='dead time correction (bin)')
     p.add_argument('-o', nargs=1, dest='overlap',
-        help='Overlap correction (bin)')
+        help='overlap correction (bin)')
     p.add_argument('-q', dest='quiet', action='store_true',
         help='run quietly (suppress output)')
     p.add_argument('-v', action='version', version=__version__)
