@@ -297,8 +297,8 @@ def process_mpl(dd):
     return dx
 
 def process_nrb(d):
-    d['nrb_copol'] = calc_nrb(d, 'channel_1', '_copol', '')
-    d['nrb_crosspol'] = calc_nrb(d, 'channel_2', '_crosspol', '_2')
+    d['nrb_copol'] = calc_nrb(d, 'channel_2', '_copol', '_2')
+    d['nrb_crosspol'] = calc_nrb(d, 'channel_1', '_crosspol', '')
     return d
 
 def read_mpl(filename):
