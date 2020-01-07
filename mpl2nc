@@ -359,7 +359,6 @@ if __name__ == '__main__':
     afterpulse = None
     overlap = None
     dead_time = None
-    mpl = None
 
     if args.afterpulse is not None:
         with open(args.afterpulse[0], 'rb') as f:
@@ -380,24 +379,25 @@ if __name__ == '__main__':
         d.update(overlap)
     if dead_time is not None:
         d.update(dead_time)
-    if mpl is not None:
-        d.update(mpl)
 
-    if os.path.isdir(args.input):
-        for name in os.listdir(args.input):
-            filename = os.path.join(args.input, name)
-            output_filename = os.path.join(
-                args.output,
-                os.path.splitext(name)[0] + b'.nc'
-            )
-            if not args.quiet:
-                print(filename)
-            mpl = read_mpl(filename)
+    if args.input is None:
+        write(d, args.output)
+    else:
+        if os.path.isdir(args.input):
+            for name in os.listdir(args.input):
+                filename = os.path.join(args.input, name)
+                output_filename = os.path.join(
+                    args.output,
+                    os.path.splitext(name)[0] + '.nc'
+                )
+                if not args.quiet:
+                    print(filename)
+                mpl = read_mpl(filename)
+                mpl.update(d)
+                process_nrb(mpl)
+                write(mpl, output_filename)
+        else:
+            mpl = read_mpl(args.input)
             mpl.update(d)
             process_nrb(mpl)
-            write(mpl, output_filename)
-    else:
-        mpl = read_mpl(args.input)
-        mpl.update(d)
-        process_nrb(mpl)
-        write(mpl, args.output)
+            write(mpl, args.output)
