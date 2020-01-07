@@ -252,7 +252,7 @@ def time(d):
 
 def calc_dtcf(x, coeff):
     n = len(coeff)
-    return np.sum([x**(n-i-1)*coeff[i] for i in range(n)], axis=0)
+    return np.sum([(x*1e3)**(n-i-1)*coeff[i] for i in range(n)], axis=0)
 
 def calc_nrb(d, channel, name, name2):
     raw = d[channel]
