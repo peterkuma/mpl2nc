@@ -50,21 +50,38 @@ file.
 
 .TP
 .RI "-a " afterpulse
-Afterpulse correction file (bin).
+Afterpulse correction file
+.RI ( .bin ).
 .TP
 .RI "-d " dead_time
-Dead time correction file (bin).
+Dead time correction file
+.RI ( .bin ).
 .IP -h
 Show help message and exit.
 .TP
 .RI "-o " overlap
-Overlap correction file (bin).
+Overlap correction file
+.RI ( .bin ).
 .IP -q
 Run quietly (suppress output).
 .IP -v
 Show version number and exit.
 
 .SH EXAMPLES
+
+.B mpl2nc 201803040300.mpl 201803040300.nc
+
+Convert
+.I 201803040300.mpl 
+to
+.IR 201803040300.nc .
+
+.B mpl2nc in out
+
+Convert MPL files in the directory
+.I in
+to NetCDF files in the directory
+.IR out .
 
 .B mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin 201803040300.mpl 201803040300.nc
 
