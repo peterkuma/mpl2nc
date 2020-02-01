@@ -252,7 +252,7 @@ This software can be used, modified and distributed freely under
 the terms of an MIT license
 (see [LICENSE.md](LICENSE.md) in the source distribution).
 
-## Release Notes
+## Release notes
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
