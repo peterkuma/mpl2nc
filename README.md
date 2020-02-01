@@ -77,8 +77,8 @@ You can also run the script mpl2nc directly without installation.
 
 - profile – backscatter profile
 - range – backscatter range
-- range_ap – afterpulse range
-- range_ol – overlap range
+- ap_range – afterpulse range
+- ol_range – overlap range
 
 ## Variables
 
@@ -99,7 +99,7 @@ You can also run the script mpl2nc directly without installation.
 | dt_number_coeff | dead time number of coefficients | count | |
 | ol_number_bins | overlap number of bins | count | |
 
-### 1D (range_ap)
+### 1D (ap_range)
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
@@ -107,7 +107,7 @@ You can also run the script mpl2nc directly without installation.
 | ap_crosspol | afterpulse cross pol values | count.µs<sup>-1</sup> | |
 | ap_range | afterpulse range | km | |
 
-### 1D (range_ol)
+### 1D (ol_range)
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
