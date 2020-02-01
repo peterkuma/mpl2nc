@@ -6,19 +6,18 @@ and dead time correction files to NetCDF.
 mpl2nc is a Python program for converting binary MPL files to NetCDF4. The
 converted variables closely follow those in the binary files. See the *Micro
 Pulse LiDAR System Software Manual* for description of the original format and
-variables.
-
-Raw lidar backscatter is stored in the `channel_1` and `channel_2` variables.
-
-**Experimental:** Normalized relative backscatter (NRB) is calculated from the
-raw backscatter. If afterpulse, overlap and dead time correction files are
+variables.  The program uses Python 2.7 and can run on any operating system
+with Python 2.7 and the netCDF4 Python package installed.  Raw lidar
+backscatter is stored in the `channel_1` and `channel_2` variables.  Normalized
+relative backscatter (NRB) is calculated from the raw backscatter
+(experimental). If afterpulse, overlap and dead time correction files are
 supplied, the corrections are applied when calculating NRB.
 
-The program uses Python 2.7 and can run on any operating system with
-Python 2.7 and the netCDF4 Python package installed.
-
-**Note:** The current release is beta – feature-complete but not tested
-comprehensively yet.
+Note that the vendor-supplied dead time correction is known to be incorrect
+in some instances. The dead time bin files use 32-bit floating point values
+to store polynomial coefficients, which may be truncated due to the limited
+precision of the data type. Using such dead time correction with mpl2nc or
+the SigmaMPL software will result in wrong calibration.
 
 ## Usage
 
@@ -197,6 +196,12 @@ This software is distributed under the terms of the MIT License
 ## Release Notes
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
+
+### 1.3.0 (2020-02-01)
+
+- Fixed NRB issues (swaped channels and incorrect application of the dead time
+correction).
+- Fixed command line argument processing.
 
 ### 1.2.0 (2019-12-20)
 
