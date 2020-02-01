@@ -54,7 +54,7 @@ and written to `output`.
 Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and later)
 is supported.
 
-## Install
+## Installation
 
 Install the required software:
 
