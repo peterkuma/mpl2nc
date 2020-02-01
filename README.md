@@ -21,6 +21,13 @@ the SigmaMPL software will result in wrong calibration.
 
 ## Usage
 
+mpl2nc is supposed to be run from the command line. Linux is recommended,
+but it may be possible to run mpl2nc under
+[Anaconda (Python 2.7 version)](https://www.anaconda.com/distribution/)
+on other operating systems.
+
+Usage:
+
 ```sh
 mpl2nc [-a <afterpulse>] [-d <dead_time>] [-h] [-o <overlap>] [-q] [-v] [<input>] <output>
 ```
