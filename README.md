@@ -54,7 +54,7 @@ and written to `output`.
 Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and later)
 is supported.
 
-## Install
+## Installation
 
 Install the required software:
 
@@ -82,16 +82,18 @@ python setup.py install
 
 You can also run the script mpl2nc directly without installation.
 
-## Dimensions
+## NetCDF output description
+
+### Dimensions
 
 - profile – backscatter profile
 - range – backscatter range
 - ap_range – afterpulse range
 - ol_range – overlap range
 
-## Variables
+### Variables
 
-### Constants
+#### Constants
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
@@ -108,7 +110,7 @@ You can also run the script mpl2nc directly without installation.
 | dt_number_coeff | dead time number of coefficients | count | |
 | ol_number_bins | overlap number of bins | count | |
 
-### 1D (ap_range)
+#### 1D (ap_range)
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
@@ -116,14 +118,14 @@ You can also run the script mpl2nc directly without installation.
 | ap_crosspol | afterpulse cross pol values | count.µs<sup>-1</sup> | |
 | ap_range | afterpulse range | km | |
 
-### 1D (ol_range)
+#### 1D (ol_range)
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
 | ol_overlap | overlap values | | |
 | ol_range | overlap range | km | |
 
-### 1D (profile)
+#### 1D (profile)
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
@@ -175,7 +177,7 @@ You can also run the script mpl2nc directly without installation.
 | ws_wind_direction | wind direction | degree | Weather station wind direction. |
 | ws_wind_speed | wind speed | km.h<sup>-1</sup> | Weather station wind speed. |
 
-### 2D (profile × range)
+#### 2D (profile × range)
 
 | Variable | Description | Units | Comment |
 | - | - | - | - |
@@ -184,7 +186,7 @@ You can also run the script mpl2nc directly without installation.
 | nrb_copol | copol normalized relative backscatter | count.µs<sup>-1</sup>.µJ<sup>-1</sup>.km<sup>2</sup> | Experimental. |
 | nrb_crosspol | crosspol normalized relative backscatter | count.µs<sup>-1</sup>.µJ<sup>-1</sup>.km<sup>2</sup> | Experimental. |
 
-## Attributes
+### Attributes
 
 | Variable | Description |
 | - | - |
@@ -192,12 +194,14 @@ You can also run the script mpl2nc directly without installation.
 | software | Software identification (`mpl2nc (https://github.com/peterkuma/mpl2nc)`). |
 | version | mpl2nc version. |
 
-## Range calculation
+## Additional information
+
+### Range calculation
 
 Range can be calculated as `0.5*bin_time*c*([0, ..., n - 1] + 0.5)`,
 where `n` is the number of bins.
 
-## NRB
+### NRB
 
 mpl2nc uses the following formula to calculate NRB:
 
