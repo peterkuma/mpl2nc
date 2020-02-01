@@ -36,17 +36,17 @@ mpl2nc [-a <afterpulse>] [-d <dead_time>] [-h] [-o <overlap>] [-q] [-v] [<input>
 
 Optional arguments:
 
-- `-a` – afterpulse correction file (bin)
-- `-d` – dead time correction file (bin)
-- `-h` – show help message and exit
-- `-o` – overlap correction file (bin)
-- `-q` – run quietly (suppress output)
-- `-v` – show program's version number and exit
+- `-a <afterpulse>`: Afterpulse correction file (`.bin`).
+- `-d <dead_time>`: Dead time correction file (`.bin`).
+- `-h`: Show help message and exit.
+- `-o <overlap>`: Overlap correction file (`.bin`).
+- `-q`. Run quietly (suppress output).
+- `-v`. Show program's version number and exit.
 
 Positional arguments:
 
-- `input` – input file or directory (mpl)
-- `output` – output file or directory (NetCDF)
+- `input`: Input file or directory (mpl).
+- `output`: Output file or directory (NetCDF).
 
 If `input` is not specified, only the correction files are converted
 and written to `output`.
