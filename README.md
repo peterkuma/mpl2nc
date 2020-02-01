@@ -54,6 +54,12 @@ and written to `output`.
 Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and later)
 is supported.
 
+See also the man page for information about usage:
+
+```
+man mpl2nc
+```
+
 ## Installation
 
 Install the required software:
