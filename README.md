@@ -36,23 +36,49 @@ mpl2nc [-a <afterpulse>] [-d <dead_time>] [-h] [-o <overlap>] [-q] [-v] [<input>
 
 Optional arguments:
 
-- `-a` – afterpulse correction file (bin)
-- `-d` – dead time correction file (bin)
-- `-h` – show help message and exit
-- `-o` – overlap correction file (bin)
-- `-q` – run quietly (suppress output)
-- `-v` – show program's version number and exit
+- `-a <afterpulse>`: Afterpulse correction file (`.bin`).
+- `-d <dead_time>`: Dead time correction file (`.bin`).
+- `-h`: Show help message and exit.
+- `-o <overlap>`: Overlap correction file (`.bin`).
+- `-q`: Run quietly (suppress output).
+- `-v`: Show program's version number and exit.
 
 Positional arguments:
 
-- `input` – input file or directory (mpl)
-- `output` – output file or directory (NetCDF)
+- `input`: Input `.mpl` file or a directory containing `.mpl` files.
+- `output`: Output `.nc` file or a directory where the resulting `.nc` files are written.
 
 If `input` is not specified, only the correction files are converted
 and written to `output`.
 
 Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and later)
 is supported.
+
+See also the man page for information about usage:
+
+```
+man mpl2nc
+```
+
+## Examples
+
+```sh
+mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin 201803040300.mpl 201803040300.nc
+```
+
+Convert `201803040300.mpl` to `201803040300.nc` using correction files for afterpulse, overlap and dead time.
+
+```sh
+mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin in out
+```
+
+Convert MPL files in the directory `in` to NetCDF files in the directory `out` using correction files for afterpulse,  overlap  and  dead time.
+
+```sh
+mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin calibration.nc
+```
+
+Convert afterpulse, overlap and dead time correction files to the NetCDF file `calibration.nc`.
 
 ## Installation
 
