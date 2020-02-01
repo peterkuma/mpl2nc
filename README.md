@@ -60,6 +60,26 @@ See also the man page for information about usage:
 man mpl2nc
 ```
 
+## Examples
+
+```sh
+mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin 201803040300.mpl 201803040300.nc
+```
+
+Convert `201803040300.mpl` to `201803040300.nc` using correction files for afterpulse, overlap and dead time.
+
+```sh
+mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin in out
+```
+
+Convert MPL files in the directory `in` to NetCDF files in the directory `out` using correction files for afterpulse,  overlap  and  dead time.
+
+```sh
+mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin calibration.nc
+```
+
+Convert afterpulse, overlap and dead time correction files to the NetCDF file `calibration.nc`.
+
 ## Installation
 
 Install the required software:
