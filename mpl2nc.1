@@ -1,0 +1,100 @@
+.TH mpl2nc 1 01/02/2020
+
+.SH NAME
+mpl2nc \- convert Sigma Space Micro Pulse Lidar (MPL) data files and afterpulse, overlap and dead time correction files to NetCDF
+
+.SH SYNOPSIS
+.B mpl2nc
+.RI "[-a " afterpulse ]
+.RI "[-d " dead_time ]
+[-h]
+.RI "[-o " overlap ]
+[-q]
+[-v]
+.RI [ input ]
+.I output
+
+.SH DESCRIPTION
+
+.B mpl2nc
+is a program for converting binary MPL files to NetCDF.
+The converted variables closely follow those in the binary files.
+Raw lidar backscatter is stored in the
+.B channel_1
+(cross-polarized) and
+.B channel_2
+(co-polarized) variables.
+Normalized relative backscatter (NRB) is calculated from the raw backscatter (experimental).
+If afterpulse, overlap and dead time correction files are supplied, the corrections are applied when calculating NRB.
+
+.IR input
+is an input
+.I .mpl
+file or a directory containing
+.I .mpl
+files.
+.IR output
+is an output
+.I .nc
+file or a directory where the resulting
+.I .nc
+files are written.
+If
+.I input
+is not specified, only the correction files are converted and written to the
+.I output 
+.I .nc
+file.
+
+.SH OPTIONS
+
+.TP
+.RI "-a " afterpulse
+Afterpulse correction file (bin).
+.TP
+.RI "-d " dead_time
+Dead time correction file (bin).
+.IP -h
+Show help message and exit.
+.TP
+.RI "-o " overlap
+Overlap correction file (bin).
+.IP -q
+Run quietly (suppress output).
+.IP -v
+Show version number and exit.
+
+.SH EXAMPLES
+
+.B mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin 201803040300.mpl 201803040300.nc
+
+Convert
+.I 201803040300.mpl 
+to
+.I 201803040300.nc
+using correction files for afterpulse, overlap and dead time.
+
+.B mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin in out
+
+Convert MPL files in the directory
+.I in
+to NetCDF files in the directory
+.I out
+using correction files for afterpulse, overlap and dead time.
+
+.B mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin calibration.nc
+
+Convert afterpulse, overlap and dead time correction files to the NetCDF file
+.IR calibration.nc .
+
+.SH COPYRIGHT
+
+Copyright (C) 2018-2020 Peter Kuma.
+.PP
+This program is available under the terms of an MIT license (see LICENSE.md in the distribution).
+
+.SH SEE ALSO
+
+See <https://github.com/peterkuma/mpl2nc>
+for more information about
+.BR mpl2nc .

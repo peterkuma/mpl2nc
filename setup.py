@@ -4,12 +4,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='mpl2nc',
-    version='1.3.1',
+    version='1.3.2',
     description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF',
     author='Peter Kuma',
     author_email='peter.kuma@fastmail.com',
     license='MIT',
     scripts=['mpl2nc'],
+    data_files=[('share/man/man1', ['mpl2nc.1'])],
     install_requires=['netCDF4>=1.2.9'],
     keywords=['sigmaspace', 'mpl', 'lidar', 'netcdf'],
     url='https://github.com/peterkuma/mpl2nc',
