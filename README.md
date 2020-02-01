@@ -45,8 +45,8 @@ Optional arguments:
 
 Positional arguments:
 
-- `input`: Input file or directory (mpl).
-- `output`: Output file or directory (NetCDF).
+- `input`: Input `.mpl` file or a directory containing `.mpl` files.
+- `output`: Output `.nc` file or a directory where the resulting `.nc` files are written.
 
 If `input` is not specified, only the correction files are converted
 and written to `output`.
