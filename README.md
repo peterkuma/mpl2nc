@@ -197,6 +197,10 @@ This software is distributed under the terms of the MIT License
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
+### 1.3.1 (2020-02-01)
+
+- When input is a directory convert files in alphabetical order.
+
 ### 1.3.0 (2020-02-01)
 
 - Fixed NRB issues (swaped channels and incorrect application of the dead time
