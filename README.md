@@ -218,7 +218,8 @@ are interpolated on the data range.
 
 ## License
 
-This software is distributed under the terms of the MIT License
+This software can be used, modified and distributed freely under
+the terms of an MIT license
 (see [LICENSE.md](LICENSE.md) in the source distribution).
 
 ## Release Notes
