@@ -199,7 +199,7 @@ where `n` is the number of bins.
 
 mpl2 uses the following formula to calculate NRB:
 
-```
+```python
 nrb_copol = (channel_2*dtcf(channel_2) - background_average_2*dtcf(background_average_2) -
             ap_copol*dtcf(ap_copol)*energy_monitor*1e-3/ap_energy +
             ap_background_average_copol*dtcf(ap_background_average_copol)*energy_monitor*1e-3/ap_energy)*
