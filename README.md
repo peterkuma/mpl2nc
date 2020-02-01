@@ -230,6 +230,10 @@ the terms of an MIT license
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
+### 1.3.2 (2020-02-01)
+
+- mpl2nc man page.
+
 ### 1.3.1 (2020-02-01)
 
 - When input is a directory convert files in alphabetical order.
