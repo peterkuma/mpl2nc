@@ -14,7 +14,7 @@ setup(
     keywords=['sigmaspace', 'mpl', 'lidar', 'netcdf'],
     url='https://github.com/peterkuma/mpl2nc',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
