@@ -10,7 +10,7 @@ import datetime as dt
 import numpy as np
 from netCDF4 import Dataset
 
-__version__ = '1.3.2'
+__version__ = '1.3.3'
 
 C = 299792458 # m.s-1
 
@@ -201,7 +201,7 @@ def read_afterpulse(f):
 
 def read_overlap(f):
     buf = f.read()
-    n = len(buf)/16
+    n = len(buf)//16
     f.seek(0)
     d = {'ol_number_bins': np.array(n, np.uint32)}
     for x in ['ol_range', 'ol_overlap']:
@@ -214,7 +214,7 @@ def read_overlap(f):
 
 def read_dead_time(f):
     buf = f.read()
-    n = len(buf)/4
+    n = len(buf)//4
     d = {'dt_number_coeff': np.array(n, np.uint32)}
     a = struct.unpack_from('<' + 'f'*n, buf)
     d['dt_coeff'] = np.array(a, np.float32)
@@ -318,7 +318,7 @@ def write(d, filename):
     f.createDimension('ap_range', None)
     f.createDimension('ol_range', None)
     f.createDimension('dt_coeff_degree', None)
-    for k, v in d.iteritems():
+    for k, v in d.items():
         h = NC_HEADER[k]
         var = f.createVariable(k, NC_TYPE[h['dtype']], h['dims'],
             fill_value=FILL_VALUE[h['dtype']])

@@ -1,10 +1,10 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 from setuptools import setup, find_packages
 
 setup(
     name='mpl2nc',
-    version='1.3.2',
+    version='1.3.3',
     description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF',
     author='Peter Kuma',
     author_email='peter.kuma@fastmail.com',
@@ -21,6 +21,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering :: Atmospheric Science',
     ]
 )
