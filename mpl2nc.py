@@ -167,7 +167,7 @@ NC_HEADER = {x[0]: {
         'dtype': x[1] if len(x) > 1 else None,
         'long_name': x[2] if len(x) > 2 else None,
         'comment': x[3] if len(x) > 3 else None,
-        'units': x[4] if len(x) > 4 else None, 
+        'units': x[4] if len(x) > 4 else None,
         'dims': x[5] if len(x) > 5 else [],
     }
     for x in (HEADER_MPL + HEADER_AFTERPULSE + EXTRA_FIELDS)
@@ -308,7 +308,7 @@ def read_mpl(filename):
             d = read_mpl_profile(f)
             if d is None:
                 break
-            dd.append(d) 
+            dd.append(d)
     return process_mpl(dd)
 
 def write(d, filename):
@@ -331,7 +331,7 @@ def write(d, filename):
     f.version = __version__
     f.close()
 
-if __name__ == '__main__':
+def main():
     p = argparse.ArgumentParser(prog='mpl2nc',
         description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.'
     )
@@ -401,3 +401,6 @@ if __name__ == '__main__':
             mpl.update(d)
             process_nrb(mpl)
             write(mpl, args.output)
+
+if __name__ == '__main__':
+    main()

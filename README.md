@@ -235,7 +235,7 @@ mpl2nc uses the following formula to calculate NRB:
 nrb_copol = (channel_2*dtcf(channel_2) - background_average_2*dtcf(background_average_2) -
             ap_copol*dtcf(ap_copol)*energy_monitor*1e-3/ap_energy +
             ap_background_average_copol*dtcf(ap_background_average_copol)*energy_monitor*1e-3/ap_energy)*
-            range**2/(ol_overlap*energy_monitor*1e-3)    
+            range**2/(ol_overlap*energy_monitor*1e-3)
 nrb_crosspol = (channel_1*dtcf(channel_1) - background_average_1*dtcf(background_average_1) -
                ap_crosspol*dtcf(ap_crosspol)*energy_monitor*1e-3/ap_energy +
                ap_background_average_crosspol*dtcf(ap_background_average_crosspol)*energy_monitor*1e-3/ap_energy)*
@@ -255,6 +255,10 @@ the terms of an MIT license
 ## Release notes
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
+
+### 1.3.4 (2020-07-18)
+
+- Fixed installation on Windows.
 
 ### 1.3.3 (2020-02-02)
 
@@ -294,7 +298,7 @@ correction).
 
 ## Contact
 
-For support or reporting bugs contact Peter Kuma <<peter.kuma@fastmail.com>>.
+For support or reporting bugs contact Peter Kuma <<peter@peterkuma.net>>.
 
 ## See also
 
