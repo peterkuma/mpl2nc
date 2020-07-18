@@ -256,7 +256,7 @@ the terms of an MIT license
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
-### 1.3.4 (2020-07-18)
+### 1.3.5 (2020-07-18)
 
 - Fixed installation on Windows.
 
