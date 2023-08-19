@@ -10,7 +10,7 @@ import datetime as dt
 import numpy as np
 from netCDF4 import Dataset
 
-__version__ = '1.3.5'
+__version__ = '1.3.6'
 
 C = 299792458 # m.s-1
 
