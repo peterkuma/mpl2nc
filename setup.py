@@ -14,7 +14,10 @@ setup(
         'console_scripts': ['mpl2nc=mpl2nc:main'],
     },
     data_files=[('share/man/man1', ['mpl2nc.1'])],
-    install_requires=['netCDF4>=1.2.9'],
+    install_requires=[
+        'numpy',
+        'netCDF4>=1.2.9',
+	],
     keywords=['sigmaspace', 'mpl', 'lidar', 'netcdf'],
     url='https://github.com/peterkuma/mpl2nc',
     classifiers=[
@@ -23,7 +26,6 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering :: Atmospheric Science',
     ]

@@ -8,12 +8,12 @@ converted variables closely follow those in the binary files. See the *Micro
 Pulse LiDAR System Software Manual* for description of the original format and
 variables. In contrast to the official SigmaMPL software, mpl2nc preserves the
 native resolution of the data and allows easier batch operation on many input
-files. The program can run on any operating system with Python 2.7 or Python 3
-and the netCDF4 Python package installed. Raw lidar backscatter is stored in
-the `channel_1` (cross-polarized) and `channel_2` (co-polarized) variables.
-Normalized relative backscatter (NRB) is calculated from the raw backscatter
-(experimental). If afterpulse, overlap and dead time correction files are
-supplied, the corrections are applied when calculating NRB.
+files. The program can run on any operating system with Python 3. Raw lidar
+backscatter is stored in the `channel_1` (cross-polarized) and `channel_2`
+(co-polarized) variables.  Normalized relative backscatter (NRB) is calculated
+from the raw backscatter (experimental). If afterpulse, overlap and dead time
+correction files are supplied, the corrections are applied when calculating
+NRB.
 
 Note that the vendor-supplied dead time correction is known to be incorrect
 in some instances. The dead time bin files use 32-bit floating point values
@@ -84,29 +84,23 @@ Convert afterpulse, overlap and dead time correction files to the NetCDF file `c
 
 Install the required software:
 
-- Python 2.7 or 3 (recommended [Anaconda](https://www.anaconda.com/distribution/) on Windows)
-- numpy Python package
-- netCDF4 Python package
+- Python 3 or [Anaconda](https://www.anaconda.com/distribution/)
+- pipx (on Linux)
 
-numpy and netCDF4 can be installed with pip if available in your Python distribution:
+To install mpl2nc with pipx on Python 3 on Linux:
 
 ```sh
-pip install numpy netCDF4
+pipx install mpl2nc
 ```
 
-To install mpl2nc with pip:
+To install in Anaconda:
 
 ```sh
 pip install mpl2nc
-````
-
-Optionally, to install from the source distribution:
-
-```sh
-python setup.py install
 ```
 
-You can also run the script mpl2nc directly without installation.
+Make sure that `$HOME/.local/bin` is included in the `PATH` environment
+variable.
 
 ## NetCDF output description
 
