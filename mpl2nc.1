@@ -1,4 +1,4 @@
-.TH mpl2nc 1 01/02/2020
+.TH mpl2nc 1 08/21/2023
 
 .SH NAME
 mpl2nc \- convert Sigma Space Micro Pulse Lidar (MPL) data files and afterpulse, overlap and dead time correction files to NetCDF
@@ -42,7 +42,7 @@ files are written.
 If
 .I input
 is not specified, only the correction files are converted and written to the
-.I output 
+.I output
 .I .nc
 file.
 
@@ -72,7 +72,7 @@ Show version number and exit.
 .B mpl2nc 201803040300.mpl 201803040300.nc
 
 Convert
-.I 201803040300.mpl 
+.I 201803040300.mpl
 to
 .IR 201803040300.nc .
 
@@ -86,7 +86,7 @@ to NetCDF files in the directory
 .B mpl2nc -a MMPL5054_Afterpulse_201903220500.bin -o MMPL5054_Overlap_201903270700.bin -d MMPL5054_SPCM34184_Deadtime7.bin 201803040300.mpl 201803040300.nc
 
 Convert
-.I 201803040300.mpl 
+.I 201803040300.mpl
 to
 .I 201803040300.nc
 using correction files for afterpulse, overlap and dead time.
