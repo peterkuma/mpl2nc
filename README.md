@@ -91,6 +91,8 @@ To install mpl2nc with pipx on Python 3 on Linux:
 
 ```sh
 pipx install mpl2nc
+mkdir -p ~/.local/share/man/man1
+ln -s ~/.local/pipx/venvs/mpl2nc/share/man/man1/mpl2nc.1 ~/.local/share/man/man1/
 ```
 
 To install in Anaconda:
