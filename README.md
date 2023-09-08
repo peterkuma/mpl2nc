@@ -35,7 +35,7 @@ Optional arguments:
 
 - `-a` *afterpulse*: Afterpulse correction file (`.bin`).
 - `-d` *dead_time*: Dead time correction file (`.bin`).
-- `-h`|`--help`: Show help message and exit.
+- `-h`, `--help`: Show help message and exit.
 - `-o` *overlap*: Overlap correction file (`.bin`).
 - `-q`: Run quietly (suppress output).
 - `-v`: Show program's version number and exit.
