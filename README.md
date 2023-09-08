@@ -23,38 +23,29 @@ the SigmaMPL software will result in wrong calibration.
 
 ## Usage
 
-mpl2nc is supposed to be run from the command line. Linux is recommended,
-but it may be possible to run mpl2nc under
-[Anaconda](https://www.anaconda.com/distribution/)
-on other operating systems.
-
-Usage:
-
-```sh
-mpl2nc [-a <afterpulse>] [-d <dead_time>] [-h] [-o <overlap>] [-q] [-v] [<input>] <output>
-```
+`mpl2nc` [`-a` *afterpulse*] [`-d` *dead_time*] [`-h`] [`-o` *overlap*] [`-q`] [`-v`] [*input*] *output*
 
 Optional arguments:
 
-- `-a <afterpulse>`: Afterpulse correction file (`.bin`).
-- `-d <dead_time>`: Dead time correction file (`.bin`).
+- `-a` *afterpulse*: Afterpulse correction file (`.bin`).
+- `-d` *dead_time*: Dead time correction file (`.bin`).
 - `-h`: Show help message and exit.
-- `-o <overlap>`: Overlap correction file (`.bin`).
+- `-o` *overlap*: Overlap correction file (`.bin`).
 - `-q`: Run quietly (suppress output).
 - `-v`: Show program's version number and exit.
 
 Positional arguments:
 
-- `input`: Input `.mpl` file or a directory containing `.mpl` files.
-- `output`: Output `.nc` file or a directory where the resulting `.nc` files are written.
+- *input*: Input `.mpl` file or a directory containing `.mpl` files.
+- *output*: Output `.nc` file or a directory where the resulting `.nc` files are written.
 
-If `input` is not specified, only the correction files are converted
-and written to `output`.
+If *input* is not specified, only the correction files are converted and
+written to *output*.
 
-Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and later)
-is supported.
+Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and
+later) is supported.
 
-See also the man page for information about usage:
+On Linux and macOS, see also the man page for information about usage:
 
 ```
 man mpl2nc
