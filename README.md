@@ -82,12 +82,24 @@ Convert afterpulse, overlap and dead time correction files to the NetCDF file `c
 
 ## Installation
 
-Install the required software:
+It is recommended to run mpl2nc on Linux.
 
-- Python 3 or [Anaconda](https://www.anaconda.com/distribution/)
-- pipx (on Linux)
+### Linux
 
-To install mpl2nc with pipx on Python 3 on Linux:
+On Debian-derived distributions (Ubuntu, Devuan, ...), install the required
+system packages with:
+
+```sh
+sudo apt install python3 python3-pip pipx
+```
+
+On Fedora, install the required system packages with:
+
+```sh
+sudo yum install python3 pipx
+```
+
+Install mpl2nc:
 
 ```sh
 pipx install mpl2nc
@@ -95,14 +107,43 @@ mkdir -p ~/.local/share/man/man1
 ln -s ~/.local/pipx/venvs/mpl2nc/share/man/man1/mpl2nc.1 ~/.local/share/man/man1/
 ```
 
-To install in Anaconda:
+Make sure that `$HOME/.local/bin` is included in the `PATH` environment
+variable if not already. This can be done with `pipx ensurepath`.
+
+You should now be able to run `mpl2nc` and see the manual page with `man mpl2nc`.
+
+### macOS
+
+Open the Terminal. Install mpl2nc with:
+
+```sh
+python3 -m pip install mpl2nc
+```
+
+Make sure that `/Users/<user>/Library/Python/<version>/bin` is included in the
+`PATH` environment variable if not already, where `<user>` is your system
+user name and `<version>` is the Python version. This path should be printed
+by the above command. This can be done by adding this line to the file
+`.zprofile` in your home directory and restart the Terminal:
+
+```
+PATH="$PATH:/Users/<user>/Library/Python/<version>/bin"
+```
+
+You should now be able to run `mpl2nc` and see the manual page with `man mpl2nc`.
+
+### Windows
+
+Install [Python 3](https://www.python.org). In the installer, tick `Add
+python.exe to PATH`.
+
+Open Command Prompt from the Start menu. Install mpl2nc with:
 
 ```sh
 pip install mpl2nc
 ```
 
-Make sure that `$HOME/.local/bin` is included in the `PATH` environment
-variable.
+You should now be able to run `mpl2nc`.
 
 ## NetCDF output description
 
