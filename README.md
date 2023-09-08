@@ -23,6 +23,9 @@ the SigmaMPL software will result in wrong calibration.
 
 ## Usage
 
+mpl2nc is a command line program to be run a terminal (Linux and macOS) or the
+Command Prompt (Windows).
+
 `mpl2nc` [`-a` *afterpulse*] [`-d` *dead_time*] [`-h`] [`-o` *overlap*] [`-q`] [`-v`] [*input*] *output*
 
 Optional arguments:
