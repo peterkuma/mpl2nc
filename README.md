@@ -109,6 +109,13 @@ variable if not already. This can be done with `pipx ensurepath`.
 
 You should now be able to run `mpl2nc` and see the manual page with `man mpl2nc`.
 
+To uninstall:
+
+```sh
+pipx uninstall mpl2nc
+rm ~/.local/share/man/man1/mpl2nc.1
+```
+
 ### macOS
 
 Open the Terminal. Install mpl2nc with:
@@ -123,11 +130,17 @@ user name and `<version>` is the Python version. This path should be printed
 by the above command. This can be done by adding this line to the file
 `.zprofile` in your home directory and restart the Terminal:
 
-```
+```sh
 PATH="$PATH:/Users/<user>/Library/Python/<version>/bin"
 ```
 
 You should now be able to run `mpl2nc` and see the manual page with `man mpl2nc`.
+
+To uninstall:
+
+```sh
+python3 -m pip uninstall mpl2nc
+```
 
 ### Windows
 
@@ -141,6 +154,12 @@ pip install mpl2nc
 ```
 
 You should now be able to run `mpl2nc`.
+
+To uninstall:
+
+```sh
+pip uninstall mpl2nc
+```
 
 ## NetCDF output description
 
