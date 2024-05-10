@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='mpl2nc',
-    version='1.3.6',
+    version='1.4.0',
     description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF',
     author='Peter Kuma',
     author_email='peter@peterkuma.net',

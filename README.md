@@ -362,6 +362,12 @@ an MIT license (see [LICENSE.md](LICENSE.md) in the source distribution).
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
+### 1.4.0 (2024-05-10)
+
+- Support for dead time correction supplied as a CSV file.
+- Better error reporting.
+- Improvements in the documentation.
+
 ### 1.3.6 (2023-08-19)
 
 - Installation with pipx.
