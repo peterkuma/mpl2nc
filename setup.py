@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'numpy',
         'netCDF4>=1.2.9',
+        'ds-format>=4.1.0',
 	],
     keywords=['sigmaspace', 'mpl', 'lidar', 'netcdf'],
     url='https://github.com/peterkuma/mpl2nc',
