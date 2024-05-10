@@ -188,19 +188,19 @@ def read_header(f, header_dsc):
     if len(buf) == 0:
         return None
     if len(buf) < size:
-        raise IOError('Incomplete header')
+        raise IOError('incomplete header')
     res = struct.unpack_from(fmt, buf)
     return {k: np.array(v, dtype=t) for k, v, t in zip(fields, res, types)}
 
 def read_afterpulse(f):
     d = read_header(f, HEADER_AFTERPULSE)
     if d['ap_header'] != 0xAAEEEEAA:
-        raise IOError('Invalid afterpulse header')
+        raise IOError('invalid afterpulse header')
     n = int(d['ap_number_bins'])
     for x in ['ap_range', 'ap_copol', 'ap_crosspol']:
         buf = f.read(8*n)
         if len(buf) < 8*n:
-            raise IOError('Incomplete %s data' % x)
+            raise IOError('incomplete %s data' % x)
         a = struct.unpack_from('<' + 'd'*n, buf)
         d[x] = np.array(a, np.float64)
     return d
@@ -213,7 +213,7 @@ def read_overlap(f):
     for x in ['ol_range', 'ol_overlap']:
         buf = f.read(8*n)
         if len(buf) < 8*n:
-            raise IOError('Incomplete %s data' % x)
+            raise IOError('incomplete %s data' % x)
         a = struct.unpack_from('<' + 'd'*n, buf)
         d[x] = np.array(a, np.float64)
     return d
@@ -246,7 +246,7 @@ def read_mpl_profile(f):
     for x in ['channel_1', 'channel_2']:
         buf = f.read(4*n)
         if len(buf) < 4*n:
-            raise IOError('Incomplete %s data' % x)
+            raise IOError('incomplete %s data' % x)
         a = struct.unpack_from('<' + 'f'*n, buf)
         d[x] = np.array(a, dtype=np.float32)
     return d
