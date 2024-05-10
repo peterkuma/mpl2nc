@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+import signal
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 import sys
 import os
@@ -331,24 +334,7 @@ def write(d, filename):
     f.version = __version__
     f.close()
 
-def main():
-    p = argparse.ArgumentParser(prog='mpl2nc',
-        description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.'
-    )
-    p.add_argument('-a', nargs=1, dest='afterpulse',
-        help='afterpulse (bin)')
-    p.add_argument('-d', nargs=1, dest='dead_time',
-        help='dead time correction (bin)')
-    p.add_argument('-o', nargs=1, dest='overlap',
-        help='overlap correction (bin)')
-    p.add_argument('-q', dest='quiet', action='store_true',
-        help='run quietly (suppress output)')
-    p.add_argument('-v', action='version', version=__version__)
-    p.add_argument('input', help='input file or directory (mpl)', nargs='?')
-    p.add_argument('output', help='output file or directory (NetCDF)')
-
-    args = p.parse_args()
-
+def main2(args):
     if args.input is None and \
         args.afterpulse is None and \
         args.overlap is None and \
@@ -401,6 +387,35 @@ def main():
             mpl.update(d)
             process_nrb(mpl)
             write(mpl, args.output)
+
+def main():
+    p = argparse.ArgumentParser(prog='mpl2nc',
+        description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.'
+    )
+    p.add_argument('-a', nargs=1, dest='afterpulse',
+        help='afterpulse (bin)')
+    p.add_argument('-d', nargs=1, dest='dead_time',
+        help='dead time correction (bin)')
+    p.add_argument('-o', nargs=1, dest='overlap',
+        help='overlap correction (bin)')
+    p.add_argument('-q', dest='quiet', action='store_true',
+        help='run quietly (suppress output)')
+    p.add_argument('-v', action='version', version=__version__)
+    p.add_argument('--debug', dest='debug', action='store_true',
+        help='print debugging information'
+    )
+    p.add_argument('input', help='input file or directory (mpl)', nargs='?')
+    p.add_argument('output', help='output file or directory (NetCDF)')
+
+    args = p.parse_args()
+
+    try:
+        main2(args)
+    except Exception as e:
+        if args.debug:
+            raise e
+        else:
+            print('Error: %s. Use --debug for more information.' % str(e), file=sys.stderr)
 
 if __name__ == '__main__':
     main()
