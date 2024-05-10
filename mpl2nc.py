@@ -276,7 +276,7 @@ def calc_dtcf_from_coeff(x, coeff):
         except RuntimeWarning as e:
             raise ValueError('overflow encountered in dead time correction calculation - please supply dead time correction polynomial curve from the instrument\'s documentation as a CSV file (see README for instructions)')
 
-def calc_dtcf_from_count_factor(x, count, factor, plot=False):
+def calc_dtcf_from_count_factor(x, count, factor):
     logcount = np.log(count)
     logfactor = np.log(factor)
     if type(x) is not np.ndarray or x.ndim == 0:
@@ -286,12 +286,6 @@ def calc_dtcf_from_count_factor(x, count, factor, plot=False):
     if not np.all(mask):
         warnings.warn('input data contain values outside of the supplied dead time correction polynomial curve')
     dtcf[mask] = np.exp(np.interp(x[mask]*1e3, count, logfactor, left=0, right=np.inf))
-    if plot:
-        import matplotlib.pyplot as plt
-        u = np.linspace(0, 35000e3, 100)
-        v = np.exp(np.interp(u, count, logfactor, left=0, right=np.inf))
-        plt.plot(u*1e-3, v)
-        plt.savefig('plot.pdf')
     return dtcf
 
 def calc_nrb(d, channel, name, name2):
@@ -315,8 +309,6 @@ def calc_nrb(d, channel, name, name2):
             calc_dtcf_from_count_factor(x, d['dt_count'], d['dt_factor'])
     else:
         calc_dtcf = lambda x: 1
-
-    calc_dtcf_from_count_factor(0, d['dt_count'], d['dt_factor'], plot=True)
 
     for i in range(n):
         range_ = 0.5*d['bin_time'][i]*C*(np.arange(m) + 0.5)*1e-3
@@ -471,7 +463,8 @@ def main():
         if args.debug:
             raise e
         else:
-            print('Error: %s. Use --debug for more information.' % str(e), file=sys.stderr)
+            print('Error: %s. Use --debug for more information.' % str(e),
+                file=sys.stderr)
 
 if __name__ == '__main__':
     main()
