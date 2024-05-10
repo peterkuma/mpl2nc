@@ -6,12 +6,13 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 import sys
 import os
 import argparse
-import logging
+import warnings
 import struct
 import datetime as dt
 
 import numpy as np
 from netCDF4 import Dataset
+import ds_format as ds
 
 __version__ = '1.3.6'
 
@@ -160,6 +161,8 @@ EXTRA_FIELDS = [
     ['ol_range', 'float64', 'overlap range', None, 'km', ['ol_range']],
     ['dt_coeff', 'float32', 'dead time coefficient', 'N coefficients of polynomial degree N-1 in decreasing order', None, ['dt_coeff_degree']],
     ['dt_coeff_degree', 'uint32', 'dead time coefficient degree', None, 'count', ['dt_coeff_degree']],
+    ['dt_count', 'float64', 'dead time count', None, 'count', ['dt_count']],
+    ['dt_factor', 'float64', 'dead time factor', None, '1', ['dt_count']],
     ['nrb_copol', 'float64', 'copol normalized relative backscatter', 'Experimental.', 'count us-1 uJ-1 km2', ['profile', 'range']],
     ['nrb_crosspol', 'float64', 'crosspol normalized relative backscatter', 'Experimental.', 'count us-1 uJ-1 km2', ['profile', 'range']],
     ['time', 'uint64', 'time', 'Record collection time.', 'seconds since 1970-01-01 00:00:00', ['profile']],
@@ -215,14 +218,25 @@ def read_overlap(f):
         d[x] = np.array(a, np.float64)
     return d
 
-def read_dead_time(f):
+def read_dt(f):
     buf = f.read()
     n = len(buf)//4
-    d = {'dt_number_coeff': np.array(n, np.uint32)}
     a = struct.unpack_from('<' + 'f'*n, buf)
-    d['dt_coeff'] = np.array(a, np.float32)
-    d['dt_coeff_degree'] = np.arange(n - 1, -1, -1, dtype=np.uint32)
-    return d
+    return {
+        'dt_number_coeff': np.array(n, np.uint32),
+        'dt_coeff': np.array(a),
+        'dt_coeff_degree': np.arange(n - 1, -1, -1, dtype=np.uint32),
+    }
+
+def read_dt_csv(filename):
+    d = ds.read(filename)
+    if 'count' not in d or 'factor' not in d or \
+        d['count'].dtype != np.float64 or d['factor'].dtype != np.float64:
+        raise IOError('invalid dead time correction file: the file must contain two numerical columns "count" and "factor"')
+    return {
+        'dt_factor': d['factor'],
+        'dt_count': d['count']*1e3,
+    }
 
 def read_mpl_profile(f):
     d = read_header(f, HEADER_MPL)
@@ -253,9 +267,32 @@ def time(d):
     t0 = dt.datetime(1970, 1, 1)
     return (t - t0).total_seconds()
 
-def calc_dtcf(x, coeff):
+def calc_dtcf_from_coeff(x, coeff):
     n = len(coeff)
-    return np.sum([(x*1e3)**(n-i-1)*coeff[i] for i in range(n)], axis=0)
+    with warnings.catch_warnings():
+        warnings.filterwarnings('error')
+        try:
+            return np.sum([(x*1e3)**(n-i-1)*coeff[i] for i in range(n)], axis=0)
+        except RuntimeWarning as e:
+            raise ValueError('overflow encountered in dead time correction calculation - please supply dead time correction polynomial curve from the instrument\'s documentation as a CSV file (see README for instructions)')
+
+def calc_dtcf_from_count_factor(x, count, factor, plot=False):
+    logcount = np.log(count)
+    logfactor = np.log(factor)
+    if type(x) is not np.ndarray or x.ndim == 0:
+        x = np.array([x])
+    dtcf = np.ones(len(x), np.float64)
+    mask = x*1e3 <= count[-1]
+    if not np.all(mask):
+        warnings.warn('input data contain values outside of the supplied dead time correction polynomial curve')
+    dtcf[mask] = np.exp(np.interp(x[mask]*1e3, count, logfactor, left=0, right=np.inf))
+    if plot:
+        import matplotlib.pyplot as plt
+        u = np.linspace(0, 35000e3, 100)
+        v = np.exp(np.interp(u, count, logfactor, left=0, right=np.inf))
+        plt.plot(u*1e-3, v)
+        plt.savefig('plot.pdf')
+    return dtcf
 
 def calc_nrb(d, channel, name, name2):
     raw = d[channel]
@@ -268,18 +305,27 @@ def calc_nrb(d, channel, name, name2):
     ol_range = d.get('ol_range')
     ap_range = d.get('ap_range')
     overlap = d.get('ol_overlap', np.ones(m, np.float64))
-    dt_coeff = d.get('dt_coeff', np.array([1.]))
 
     nrb = np.full((n, m), np.nan, np.float64)
+
+    if 'dt_coeff' in d:
+        calc_dtcf = lambda x: calc_dtcf_from_coeff(x, d['dt_coeff'])
+    elif 'dt_count' in d and 'dt_factor' in d:
+        calc_dtcf = lambda x: \
+            calc_dtcf_from_count_factor(x, d['dt_count'], d['dt_factor'])
+    else:
+        calc_dtcf = lambda x: 1
+
+    calc_dtcf_from_count_factor(0, d['dt_count'], d['dt_factor'], plot=True)
 
     for i in range(n):
         range_ = 0.5*d['bin_time'][i]*C*(np.arange(m) + 0.5)*1e-3
         ap2 = np.interp(range_, ap_range, ap) if ap_range is not None else ap
         overlap2 = np.interp(range_, ol_range, overlap) if ol_range is not None else overlap
-        nrb[i] = (raw[i,:]*calc_dtcf(raw[i,:], dt_coeff) - \
-            background[i]*calc_dtcf(background[i], dt_coeff) - \
-            ap2*calc_dtcf(ap2, dt_coeff)*energy[i]/ap_energy + \
-            ap_background*calc_dtcf(ap_background, dt_coeff)*energy[i]/ap_energy)* \
+        nrb[i] = (raw[i,:]*calc_dtcf(raw[i,:]) - \
+            background[i]*calc_dtcf(background[i]) - \
+            ap2*calc_dtcf(ap2)*energy[i]/ap_energy + \
+            ap_background*calc_dtcf(ap_background)*energy[i]/ap_energy)* \
             range_**2/(overlap2*energy[i])
 
     return nrb
@@ -320,7 +366,10 @@ def write(d, filename):
     f.createDimension('range', None)
     f.createDimension('ap_range', None)
     f.createDimension('ol_range', None)
-    f.createDimension('dt_coeff_degree', None)
+    if 'dt_coeff' in d:
+        f.createDimension('dt_coeff_degree', None)
+    if 'dt_count' in d:
+        f.createDimension('dt_count', None)
     for k, v in d.items():
         h = NC_HEADER[k]
         var = f.createVariable(k, NC_TYPE[h['dtype']], h['dims'],
@@ -355,8 +404,11 @@ def main2(args):
             overlap = read_overlap(f)
 
     if args.dead_time is not None:
-        with open(args.dead_time[0], 'rb') as f:
-            dead_time = read_dead_time(f)
+        if args.dead_time[0].endswith('.csv'):
+            dead_time = read_dt_csv(args.dead_time[0])
+        else:
+            with open(args.dead_time[0], 'rb') as f:
+                dead_time = read_dt(f)
 
     d = {}
     if afterpulse is not None:
@@ -393,18 +445,18 @@ def main():
         description='Convert Sigma Space Micro Pulse Lidar (MPL) data files to NetCDF.'
     )
     p.add_argument('-a', nargs=1, dest='afterpulse',
-        help='afterpulse (bin)')
+        help='afterpulse correction file (".bin")')
     p.add_argument('-d', nargs=1, dest='dead_time',
-        help='dead time correction (bin)')
+        help='dead time correction file (".bin" or ".csv")')
     p.add_argument('-o', nargs=1, dest='overlap',
-        help='overlap correction (bin)')
+        help='overlap correction file (".bin")')
     p.add_argument('-q', dest='quiet', action='store_true',
         help='run quietly (suppress output)')
     p.add_argument('-v', action='version', version=__version__)
     p.add_argument('--debug', dest='debug', action='store_true',
         help='print debugging information'
     )
-    p.add_argument('input', help='input file or directory (mpl)', nargs='?')
+    p.add_argument('input', help='input file or directory (".mpl")', nargs='?')
     p.add_argument('output', help='output file or directory (NetCDF)')
 
     args = p.parse_args()

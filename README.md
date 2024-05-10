@@ -19,7 +19,9 @@ Note that the vendor-supplied dead time correction is known to be incorrect
 in some instances. The dead time bin files use 32-bit floating point values
 to store polynomial coefficients, which may be truncated due to the limited
 precision of the data type. Using such dead time correction with mpl2nc or
-the SigmaMPL software will result in wrong calibration.
+the SigmaMPL software will result in wrong calibration. In such case please
+use a CSV file with dead time correction polynomial curve values as specified in
+the instrument's documentation ([see below](#dead-time-correction)).
 
 ## Usage
 
@@ -34,7 +36,7 @@ Synopsis:
 Optional arguments:
 
 - `-a` *afterpulse*: Afterpulse correction file (`.bin`).
-- `-d` *dead_time*: Dead time correction file (`.bin`).
+- `-d` *dead_time*: Dead time correction file (`.bin` or `.csv`).
 - `-h`, `--help`: Show help message and exit.
 - `-o` *overlap*: Overlap correction file (`.bin`).
 - `-q`: Run quietly (suppress output).
@@ -50,6 +52,10 @@ written to *output*.
 
 Currently only afterpulse correction file version 3 (SigmaMPL2013R1.0 and
 later) is supported.
+
+The dead time correction file can come either from the vendor-supplied `.bin` file
+or from a CSV file created manually from a polynomial curve specified in the
+instrument's documentation ([see below](#dead-time-correction)).
 
 On Linux and macOS, see also the man page for information about usage:
 
@@ -298,6 +304,49 @@ nrb_crosspol = (channel_1*dtcf(channel_1) - background_average_1*dtcf(background
 where `range` is range in m and dtcf is a function which calculates the dead
 time correction factor for given photon counts. The correction fields
 are interpolated on the data range.
+
+### Dead time correction
+
+A CSV file with dead time correction values can be supplied with the `-d` option.
+This can be created from a dead time correction polynomial curve table supplied
+with the instrument. For example:
+
+![](dt-example/dt.png)
+
+The CSV file should contain two columns: `count` (in Kc/s) and `factor`
+(unitless). The values should be as specified in the table for your particular
+instrument. For the above example, the content of the
+[CSV file](dt-example/dt.csv) should be:
+
+```csv
+count,factor
+13.6,1.00
+33.9,1.01
+87.1,0.98
+220.3,0.98
+542.4,1.00
+1332.2,1.02
+2071.1,1.04
+3101.2,1.10
+4550.5,1.19
+6630.3,1.29
+9281.0,1.46
+10855.9,1.58
+12618.1,1.71
+14570.7,1.86
+16570.5,2.06
+18778.5,2.29
+20667.1,2.62
+23145.1,2.94
+25075.1,3.42
+27049.1,3.99
+28816.7,4.71
+30462.6,5.61
+31942.1,6.74
+33147.1,8.18
+33964.4,10.05
+34434.4,12.47
+```
 
 ## License
 
