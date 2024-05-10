@@ -349,7 +349,7 @@ count,factor
 ```
 
 The resulting curve is be linearly interpolated between the specified points
-in the count–log(factor) space. For count values below the smallest value,
+in the `count`–*log*(`factor`) space. For count values below the smallest value,
 a factor of 1 is used. For count values above the largest values, a factor
 of infinity (in the floating-point data type) is used and a warning is issued.
 
