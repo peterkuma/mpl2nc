@@ -1,1 +1,1 @@
-include README.md LICENSE.md mpl2nc.1
+include README.md LICENSE.md mpl2nc.1 dt-example/dt.png dt-example/dt.csv
