@@ -461,6 +461,10 @@ def main():
 
     args = p.parse_args()
 
+    if not args.debug:
+        warnings.formatwarning = lambda msg, *args, **kwargs: \
+            'Warning: %s. Use --debug for more information.\n' % str(msg)
+
     try:
         main2(args)
     except Exception as e:
