@@ -362,6 +362,11 @@ an MIT license (see [LICENSE.md](LICENSE.md) in the source distribution).
 
 Version numbering follows [Semantic Versioning](https://semver.org/).
 
+### 1.4.2 (2024-11-25)
+
+- Fix a bug due to a wrong missing value for uint16 variables, which happens
+  with recent versions of NumPy.
+
 ### 1.4.1 (2024-05-10)
 
 - Support for dead time correction supplied as a CSV file.

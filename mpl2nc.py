@@ -14,7 +14,7 @@ import numpy as np
 from netCDF4 import Dataset
 import ds_format as ds
 
-__version__ = '1.4.1'
+__version__ = '1.4.2'
 
 C = 299792458 # m.s-1
 
